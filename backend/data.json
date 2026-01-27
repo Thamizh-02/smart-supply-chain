@@ -1,0 +1,53 @@
+{
+  "users": [
+    {
+      "username": "rohith",
+      "email": "rohithv3069@gmail.com",
+      "password": "rohith$2006",
+      "role": "admin"
+    },
+    {
+      "username": "thanigaivel t",
+      "email": "thanigaivelt76@gmail.com",
+      "password": "12345678",
+      "role": "customer"
+    },
+    {
+      "username": "jegan",
+      "email": "yaswantharun755@gmail.com",
+      "password": "yash123",
+      "role": "customer"
+    }
+  ],
+  "orders": [
+    {
+      "orderId": "ORD-1769519015116-jwn0wvsr0",
+      "customerId": "cust-001",
+      "productName": "iphone 13",
+      "productId": "prdt-001",
+      "quantity": "2",
+      "status": "pending",
+      "createdAt": "2026-01-27T13:03:35.116Z",
+      "gpsTrackerId": null,
+      "qrCode": null,
+      "locations": [],
+      "blockchainHash": "1adeed30ddd3e41295f62653e4a944c317a0ae34009167931fef72e100bbc2fa",
+      "transactionId": "0x0aab4dc7e2e1e328dfb3a58cc5f1f8ba7a8810bb27b1c6a115aa90e61e9adc2b"
+    }
+  ],
+  "blockchain": [
+    {
+      "transactionId": "0x0aab4dc7e2e1e328dfb3a58cc5f1f8ba7a8810bb27b1c6a115aa90e61e9adc2b",
+      "orderId": "ORD-1769519015116-jwn0wvsr0",
+      "eventType": "order_created",
+      "timestamp": "2026-01-27T13:03:35.116Z",
+      "data": {
+        "customerId": "cust-001",
+        "productName": "iphone 13",
+        "quantity": "2"
+      },
+      "blockchainHash": "609695f05388991d3e04a8422e8c34800f9b7f3beb8357ff1b53d3ff93b56e60"
+    }
+  ],
+  "gpsLocations": []
+}
