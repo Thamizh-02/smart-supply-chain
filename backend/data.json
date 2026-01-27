@@ -23,6 +23,12 @@
       "email": "thamizh3473@gmail.com",
       "password": "12345678",
       "role": "admin"
+    },
+    {
+      "username": "selvan",
+      "email": "thamizh21105@gmail.com",
+      "password": "rohith$2006",
+      "role": "admin"
     }
   ],
   "orders": [

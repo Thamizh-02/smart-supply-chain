@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic Tool - Supply Smart Chain</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .section h2 {
+      color: #1976d2;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .status.success {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .status.error {
+      background: #f44336;
+      color: white;
+    }
+
+    .status.warning {
+      background: #ff9800;
+      color: white;
+    }
+
+    .status.info {
+      background: #2196F3;
+      color: white;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 10px 0;
+      width: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .log {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      margin-top: 10px;
+      border-left: 4px solid #1976d2;
+    }
+
+    .instruction {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border-left: 4px solid #2196F3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🔧 Supply Smart Chain - Diagnostic Tool</h1>
+
+  <!-- Environment Info -->
+  <div class="section">
+    <h2>📊 Environment Information</h2>
+    <div id="envInfo"></div>
+  </div>
+
+  <!-- Connection Tests -->
+  <div class="section">
+    <h2>🔌 Connection Tests</h2>
+    <button onclick="testBackendConnection()">Test Backend Connection</button>
+    <button onclick="testPorts()">Check Open Ports</button>
+    <div id="connectionResult"></div>
+  </div>
+
+  <!-- Fix Instructions -->
+  <div class="section">
+    <h2>🚀 Quick Fix</h2>
+    <div class="instruction">
+      <strong>If you see "Failed to fetch" error:</strong>
+      <ol style="margin-left: 20px; margin-top: 10px;">
+        <li>Open Command Prompt / Terminal</li>
+        <li>Navigate to the project: <code>cd "supply smart chain"</code></li>
+        <li>Start backend: <code>cd backend && node server.js</code></li>
+        <li>You should see: <strong>"Server running on port 5000"</strong></li>
+        <li>Open new terminal window and run: <code>node frontend-server.js</code></li>
+        <li>Open <code>http://localhost:3000</code> in browser</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Backend Logs -->
+  <div class="section">
+    <h2>📋 Diagnostic Logs</h2>
+    <button onclick="runFullDiagnostic()">Run Full Diagnostic</button>
+    <div id="logOutput" class="log" style="display:none;"></div>
+  </div>
+
+  <!-- Help -->
+  <div class="section">
+    <h2>❓ Troubleshooting</h2>
+    <div class="instruction">
+      <strong>Issue: "Failed to fetch" error</strong><br>
+      Check that backend server is running on port 5000<br><br>
+      
+      <strong>Issue: Port 5000 already in use</strong><br>
+      Kill the process or change port in backend/server.js<br><br>
+      
+      <strong>Issue: Page won't load at all</strong><br>
+      Make sure you're accessing via http://localhost:3000 (not file://)<br><br>
+      
+      <strong>Issue: Can't find Node.js command</strong><br>
+      Install Node.js from https://nodejs.org
+    </div>
+  </div>
+</div>
+
+<script>
+  function displayEnvInfo() {
+    const info = document.getElementById('envInfo');
+    const html = `
+      <div class="status info">
+        Browser: ${navigator.userAgent.split(' ').slice(-2).join(' ')}
+      </div>
+      <div class="status info">
+        Location: ${window.location.href}
+      </div>
+      <div class="status info">
+        Protocol: ${window.location.protocol}
+      </div>
+      <div class="status info">
+        Hostname: ${window.location.hostname}
+      </div>
+    `;
+    info.innerHTML = html;
+  }
+
+  async function testBackendConnection() {
+    const result = document.getElementById('connectionResult');
+    result.innerHTML = '<div class="status warning">Testing...</div>';
+    
+    const endpoints = [
+      'http://localhost:5000/api/health',
+      'http://127.0.0.1:5000/api/health'
+    ];
+
+    for (let endpoint of endpoints) {
+      try {
+        const response = await Promise.race([
+          fetch(endpoint),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 3000))
+        ]);
+        if (response.ok) {
+          result.innerHTML = `<div class="status success">✅ Backend Connected at ${endpoint}</div>`;
+          return;
+        }
+      } catch (err) {
+        console.log(`Failed to connect to ${endpoint}:`, err.message);
+      }
+    }
+
+    result.innerHTML = `
+      <div class="status error">❌ Backend Not Reachable</div>
+      <div class="instruction">
+        <strong>Fix:</strong><br>
+        1. Open terminal<br>
+        2. Run: <code>cd backend && node server.js</code><br>
+        3. Wait for "Server running on port 5000"<br>
+        4. Then refresh this page
+      </div>
+    `;
+  }
+
+  function testPorts() {
+    const result = document.getElementById('connectionResult');
+    const ports = [3000, 5000];
+    let html = '<div style="margin-top: 10px;">';
+    
+    ports.forEach(port => {
+      html += `<div class="status warning">Port ${port}: Testing...</div>`;
+    });
+    
+    result.innerHTML = html + '</div>';
+    
+    // Note: We can't directly check ports from browser, but we can test endpoints
+    setTimeout(() => {
+      testBackendConnection();
+    }, 1000);
+  }
+
+  function runFullDiagnostic() {
+    const logDiv = document.getElementById('logOutput');
+    logDiv.style.display = 'block';
+    logDiv.innerHTML = '';
+    
+    const log = (msg) => {
+      logDiv.innerHTML += msg + '<br>';
+      logDiv.scrollTop = logDiv.scrollHeight;
+    };
+
+    log('🔍 Starting Full Diagnostic...');
+    log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    log('');
+    
+    log('1️⃣ Environment Check:');
+    log('   Browser: ' + navigator.userAgent.substring(0, 50) + '...');
+    log('   Location: ' + window.location.href);
+    log('');
+    
+    log('2️⃣ Network Tests:');
+    log('   Testing http://localhost:5000/api/health...');
+    
+    fetch('http://localhost:5000/api/health', { timeout: 3000 })
+      .then(res => {
+        log('   ✅ Connection successful!');
+        log('');
+        log('3️⃣ Next Steps:');
+        log('   • Go to http://localhost:3000');
+        log('   • Try logging in');
+        log('');
+        log('✅ Diagnostic Complete!');
+      })
+      .catch(err => {
+        log('   ❌ Connection failed: ' + err.message);
+        log('');
+        log('🔧 Fix Instructions:');
+        log('   1. Open Command Prompt');
+        log('   2. cd backend');
+        log('   3. node server.js');
+        log('   4. Wait for "Server running on port 5000"');
+        log('   5. Then refresh this page');
+        log('');
+      });
+  }
+
+  // Run on load
+  window.addEventListener('load', displayEnvInfo);
+</script>
+
+</body>
+</html>
