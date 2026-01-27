@@ -1,0 +1,239 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+h2, h3 {
+  color: #1976d2;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.login-box, .card {
+  background: white;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.card {
+  max-width: 1000px;
+}
+
+input, select, button {
+  width: 100%;
+  margin: 12px 0;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.3);
+}
+
+button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.toggle-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.toggle-text a {
+  color: #1976d2;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.toggle-text a:hover {
+  text-decoration: underline;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+table th, table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background: #f5f5f5;
+  font-weight: bold;
+  color: #333;
+}
+
+table tr:hover {
+  background: #f9f9f9;
+}
+
+table button {
+  padding: 8px 16px;
+  margin: 0;
+  width: auto;
+}
+
+.status-timeline {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.status-step {
+  text-align: center;
+  padding: 15px;
+  border: 3px solid #ddd;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background: white;
+  margin: 10px;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.status-step.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.blockchain-info {
+  background: #f0f4ff;
+  padding: 15px;
+  border-left: 5px solid #1976d2;
+  margin: 15px 0;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  word-break: break-all;
+  font-size: 13px;
+  color: #333;
+}
+
+.blockchain-info strong {
+  color: #1976d2;
+}
+
+.location-map {
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+  border-radius: 12px;
+  margin: 20px 0;
+  border: 2px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#qrcode {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+p {
+  line-height: 1.8;
+  color: #333;
+  margin: 10px 0;
+}
+
+ul, li {
+  margin: 10px 0;
+  color: #333;
+}
+
+li {
+  margin-left: 20px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 3px solid #1976d2;
+}
+
+@media (max-width: 768px) {
+  .card, .login-box {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  .status-step {
+    width: 80px;
+    height: 80px;
+    font-size: 11px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  table th, table td {
+    padding: 8px;
+  }
+}
