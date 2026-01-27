@@ -1,0 +1,25 @@
+{
+  "name": "supply-smart-chain",
+  "version": "1.0.0",
+  "description": "Supply Chain Management with Blockchain",
+  "main": "index.html",
+  "scripts": {
+    "start": "npm run start:all",
+    "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "cd backend && node server.js",
+    "start:frontend": "node frontend-server.js",
+    "install:all": "npm install && cd backend && npm install && cd .."
+  },
+  "keywords": [
+    "supply-chain",
+    "blockchain"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

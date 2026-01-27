@@ -17,6 +17,12 @@
       "email": "yaswantharun755@gmail.com",
       "password": "yash123",
       "role": "customer"
+    },
+    {
+      "username": "thamizh",
+      "email": "thamizh3473@gmail.com",
+      "password": "12345678",
+      "role": "admin"
     }
   ],
   "orders": [

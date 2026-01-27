@@ -1,4 +1,77 @@
-const API = "http://localhost:5000/api";
+// API Configuration with fallback and debugging
+let API_CONFIG = {
+  primary: "http://localhost:5000/api",
+  secondary: "http://127.0.0.1:5000/api",
+  timeout: 5000
+};
+
+let API = API_CONFIG.primary;
+let serverConnected = false;
+
+// Initialize and test connection on page load
+window.addEventListener('load', async function() {
+  console.log("%c🔍 Testing API Connection...", "color: blue; font-weight: bold;");
+  await testAPIConnection();
+});
+
+// Function to test API connection with retries
+async function testAPIConnection() {
+  const endpoints = [API_CONFIG.primary, API_CONFIG.secondary];
+  
+  for (let endpoint of endpoints) {
+    try {
+      console.log(`Testing endpoint: ${endpoint}`);
+      const response = await Promise.race([
+        fetch(endpoint + "/health"),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout')), API_CONFIG.timeout)
+        )
+      ]);
+      
+      if (response.ok) {
+        API = endpoint;
+        serverConnected = true;
+        console.log("%c✅ Connected to backend at: " + API, "color: green; font-weight: bold;");
+        showConnectionStatus("Connected", "green");
+        return;
+      }
+    } catch (err) {
+      console.warn(`❌ Failed to connect to ${endpoint}:`, err.message);
+    }
+  }
+  
+  // No connection found
+  serverConnected = false;
+  console.error("%c❌ ERROR: Cannot connect to backend server!", "color: red; font-weight: bold;");
+  console.error("%c📍 Tried endpoints: " + endpoints.join(", "), "color: orange;");
+  console.error("%c💡 Fix: Make sure backend server is running with: cd backend && node server.js", "color: orange;");
+  showConnectionStatus("Disconnected", "red");
+}
+
+function showConnectionStatus(status, color) {
+  // Add connection status indicator to page
+  let statusDiv = document.getElementById('connection-status');
+  if (!statusDiv) {
+    statusDiv = document.createElement('div');
+    statusDiv.id = 'connection-status';
+    statusDiv.style.cssText = `
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 10px 15px;
+      background: ${color};
+      color: white;
+      border-radius: 5px;
+      font-weight: bold;
+      z-index: 10000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    `;
+    document.body.appendChild(statusDiv);
+  }
+  statusDiv.textContent = `Backend ${status}`;
+  statusDiv.style.background = color;
+}
+
 let currentOrderId = null;
 let mapCentered = false;
 
@@ -14,6 +87,17 @@ function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   const role = document.getElementById("role").value;
+
+  if (!username || !password) {
+    alert("⚠️ Please enter username and password");
+    return;
+  }
+
+  // Check connection first
+  if (!serverConnected) {
+    alert("❌ Backend server is not running!\n\nPlease start the backend with:\ncd backend && node server.js\n\nThen try again.");
+    return;
+  }
 
   console.log("Attempting login with username:", username, "role:", role);
 
@@ -39,7 +123,11 @@ function login() {
   })
   .catch(err => {
     console.error("Login error:", err);
-    alert("Error: " + err);
+    if (err.message === "Failed to fetch") {
+      alert("❌ Network Error: Cannot reach backend server\n\nMake sure:\n1. Backend is running (cd backend && node server.js)\n2. Port 5000 is not blocked\n3. Check browser console for details");
+    } else {
+      alert("❌ Error: " + err.message);
+    }
   });
 }
 
@@ -75,7 +163,14 @@ function register() {
       alert(data.msg || "Registration failed");
     }
   })
-  .catch(err => alert("Error: " + err));
+  .catch(err => {
+    console.error("Register error:", err);
+    if (err.message === "Failed to fetch") {
+      alert("Error: Cannot connect to server. Make sure the backend is running at http://localhost:5000");
+    } else {
+      alert("Error: " + err.message);
+    }
+  });
 }
 
 // ===== BLOCKCHAIN ORDER FUNCTIONS =====
@@ -126,7 +221,11 @@ function createOrder() {
   })
   .catch(err => {
     console.error("Create order error:", err);
-    alert("Error: " + err.message);
+    if (err.message === "Failed to fetch") {
+      alert("Error: Cannot connect to server. Make sure the backend is running at http://localhost:5000");
+    } else {
+      alert("Error: " + err.message);
+    }
   });
 }
 
@@ -443,6 +542,34 @@ function displayGPSMap(gpsHistory) {
     mapDiv.innerHTML = "<p style='text-align:center; color:red;'>Error rendering map</p>";
   }
 }
+
+// ===== DEBUG & HELPER FUNCTIONS =====
+
+// Function to manually test connection
+function manualConnectionTest() {
+  console.clear();
+  console.log("%c🔧 Manual Connection Test", "color: blue; font-weight: bold; font-size: 16px;");
+  console.log("%c========================================", "color: blue;");
+  console.log(`Current API: ${API}`);
+  console.log(`Server Connected: ${serverConnected ? '✅ Yes' : '❌ No'}`);
+  console.log(`Browser Hostname: ${window.location.hostname}`);
+  console.log(`Protocol: ${window.location.protocol}`);
+  console.log("%c========================================", "color: blue;");
+  console.log("%cTo fix 'Failed to fetch' error:", "color: orange; font-weight: bold;");
+  console.log("%c1. Open new terminal", "color: orange;");
+  console.log("%c2. Run: cd backend && node server.js", "color: orange;");
+  console.log("%c3. Wait for 'Server running on port 5000'", "color: orange;");
+  console.log("%c4. Refresh this page", "color: orange;");
+  testAPIConnection();
+}
+
+// Add this to window so it can be called from console
+window.testConnection = manualConnectionTest;
+window.getAPIStatus = () => ({
+  connected: serverConnected,
+  endpoint: API,
+  config: API_CONFIG
+});
 
 // Load orders when on dashboard
 if (location.pathname.includes("dashboard")) {

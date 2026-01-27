@@ -5,12 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="style.css">
+  <script>
+    // Test API connection on page load
+    window.addEventListener('load', function() {
+      testAPIConnection();
+    });
+    
+    function testAPIConnection() {
+      const API = window.location.hostname === 'localhost' 
+        ? "http://localhost:5000/api"
+        : "http://localhost:5000/api";
+      
+      fetch(API + "/health")
+        .then(res => {
+          if (res.ok) {
+            console.log("✅ Backend server is connected");
+          }
+        })
+        .catch(err => {
+          console.warn("⚠️ Backend server not accessible at " + API);
+        });
+    }
+  </script>
 </head>
 <body>
+
+<!-- Connection Status Indicator (will be added by JS) -->
 
 <!-- Login Form -->
 <div id="loginForm" class="login-box">
   <h2>Login</h2>
+  
+  <div id="statusMessage" style="display:none; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center; font-weight: bold;">
+  </div>
 
   <select id="role" title="Select your role">
     <option value="admin">Admin</option>
@@ -45,5 +72,26 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+  // Show status message once connection is tested
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      const statusDiv = document.getElementById('statusMessage');
+      if (statusDiv) {
+        if (serverConnected) {
+          statusDiv.textContent = '✅ Connected to Backend';
+          statusDiv.style.background = '#4CAF50';
+          statusDiv.style.color = 'white';
+          statusDiv.style.display = 'block';
+        } else {
+          statusDiv.textContent = '❌ Backend Not Connected - Check Console';
+          statusDiv.style.background = '#f44336';
+          statusDiv.style.color = 'white';
+          statusDiv.style.display = 'block';
+        }
+      }
+    }, 1000);
+  });
+</script>
 </body>
 </html>
