@@ -29,6 +29,12 @@
       "email": "thamizh21105@gmail.com",
       "password": "rohith$2006",
       "role": "admin"
+    },
+    {
+      "username": "tamil",
+      "email": "ethamizh25@gmail.com",
+      "password": "12345678",
+      "role": "customer"
     }
   ],
   "orders": [
