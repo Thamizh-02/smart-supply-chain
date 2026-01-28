@@ -35,6 +35,24 @@
       "email": "ethamizh25@gmail.com",
       "password": "12345678",
       "role": "customer"
+    },
+    {
+      "username": "thani",
+      "email": "thamizh3473@gmail.com",
+      "password": "12345678",
+      "role": "admin"
+    },
+    {
+      "username": "praga",
+      "email": "thamizh2117@gmail.com",
+      "password": "12345678",
+      "role": "customer"
+    },
+    {
+      "username": "sushanth",
+      "email": "sushanth@gmail.com",
+      "password": "12345678",
+      "role": "customer"
     }
   ],
   "orders": [
@@ -44,10 +62,14 @@
       "productName": "iphone 13",
       "productId": "prdt-001",
       "quantity": "2",
-      "status": "pending",
+      "status": "packed",
       "createdAt": "2026-01-27T13:03:35.116Z",
-      "gpsTrackerId": null,
-      "qrCode": null,
+      "gpsTrackerId": "AUTO-wnu9kyxla",
+      "qrCode": {
+        "data": "{\"orderId\":\"ORD-1769519015116-jwn0wvsr0\",\"blockchainHash\":\"1adeed30ddd3e41295f62653e4a944c317a0ae34009167931fef72e100bbc2fa\",\"transactionId\":\"0x0aab4dc7e2e1e328dfb3a58cc5f1f8ba7a8810bb27b1c6a115aa90e61e9adc2b\",\"verificationUrl\":\"http://localhost:3000/verify/ORD-1769519015116-jwn0wvsr0\",\"timestamp\":\"2026-01-27T16:45:00.687Z\"}",
+        "hash": "7355deb0921121c69e1827893f47258666df0dfdab0729aa05859fd7d0874291",
+        "generatedAt": "2026-01-27T16:45:00.687Z"
+      },
       "locations": [],
       "blockchainHash": "1adeed30ddd3e41295f62653e4a944c317a0ae34009167931fef72e100bbc2fa",
       "transactionId": "0x0aab4dc7e2e1e328dfb3a58cc5f1f8ba7a8810bb27b1c6a115aa90e61e9adc2b"
@@ -65,6 +87,17 @@
         "quantity": "2"
       },
       "blockchainHash": "609695f05388991d3e04a8422e8c34800f9b7f3beb8357ff1b53d3ff93b56e60"
+    },
+    {
+      "transactionId": "0x26257715e9bf5177fec792162b8941b3bfd97644e688de3c9cea0e77d5df8336",
+      "orderId": "ORD-1769519015116-jwn0wvsr0",
+      "eventType": "dispatched",
+      "timestamp": "2026-01-27T16:45:00.688Z",
+      "data": {
+        "gpsTrackerId": "AUTO-wnu9kyxla",
+        "qrCode": "7355deb0921121c69e1827893f47258666df0dfdab0729aa05859fd7d0874291"
+      },
+      "blockchainHash": "8b98fb85b8ac7f7f73c94b0b0f4b4cf1dce5021d84a69ced7d6dcbfde41da5d5"
     }
   ],
   "gpsLocations": []

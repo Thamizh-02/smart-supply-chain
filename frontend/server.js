@@ -4,6 +4,6 @@ const app = express();
 
 app.use(express.static(path.join(__dirname)));
 
-app.listen(8080, () => {
-  console.log('Frontend server running on http://localhost:8080');
+app.listen(3000, () => {
+  console.log('Frontend server running on http://localhost:3000');
 });

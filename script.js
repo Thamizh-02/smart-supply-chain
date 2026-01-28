@@ -1,76 +1,5 @@
-// API Configuration with fallback and debugging
-let API_CONFIG = {
-  primary: "http://localhost:5000/api",
-  secondary: "http://127.0.0.1:5000/api",
-  timeout: 5000
-};
-
-let API = API_CONFIG.primary;
-let serverConnected = false;
-
-// Initialize and test connection on page load
-window.addEventListener('load', async function() {
-  console.log("%c🔍 Testing API Connection...", "color: blue; font-weight: bold;");
-  await testAPIConnection();
-});
-
-// Function to test API connection with retries
-async function testAPIConnection() {
-  const endpoints = [API_CONFIG.primary, API_CONFIG.secondary];
-  
-  for (let endpoint of endpoints) {
-    try {
-      console.log(`Testing endpoint: ${endpoint}`);
-      const response = await Promise.race([
-        fetch(endpoint + "/health"),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout')), API_CONFIG.timeout)
-        )
-      ]);
-      
-      if (response.ok) {
-        API = endpoint;
-        serverConnected = true;
-        console.log("%c✅ Connected to backend at: " + API, "color: green; font-weight: bold;");
-        showConnectionStatus("Connected", "green");
-        return;
-      }
-    } catch (err) {
-      console.warn(`❌ Failed to connect to ${endpoint}:`, err.message);
-    }
-  }
-  
-  // No connection found
-  serverConnected = false;
-  console.error("%c❌ ERROR: Cannot connect to backend server!", "color: red; font-weight: bold;");
-  console.error("%c📍 Tried endpoints: " + endpoints.join(", "), "color: orange;");
-  console.error("%c💡 Fix: Make sure backend server is running with: cd backend && node server.js", "color: orange;");
-  showConnectionStatus("Disconnected", "red");
-}
-
-function showConnectionStatus(status, color) {
-  // Add connection status indicator to page
-  let statusDiv = document.getElementById('connection-status');
-  if (!statusDiv) {
-    statusDiv = document.createElement('div');
-    statusDiv.id = 'connection-status';
-    statusDiv.style.cssText = `
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      padding: 10px 15px;
-      background: ${color};
-      color: white;
-      border-radius: 5px;
-      font-weight: bold;
-      z-index: 10000;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    `;
-    document.body.appendChild(statusDiv);
-  }
-  statusDiv.textContent = `Backend ${status}`;
-  statusDiv.style.background = color;
-}
+// API Configuration
+let API = "http://localhost:5000/api";
 
 let currentOrderId = null;
 let mapCentered = false;
@@ -90,12 +19,6 @@ function login() {
 
   if (!username || !password) {
     alert("⚠️ Please enter username and password");
-    return;
-  }
-
-  // Check connection first
-  if (!serverConnected) {
-    alert("❌ Backend server is not running!\n\nPlease start the backend with:\ncd backend && node server.js\n\nThen try again.");
     return;
   }
 

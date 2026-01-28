@@ -264,7 +264,19 @@ router.post("/deliver/:orderId", auth, (req, res) => {
   });
 });
 
-// 5️⃣ Get Order with Full Blockchain History
+// Get all orders - MUST come before /:orderId route
+router.get("/", auth, (req, res) => {
+  try {
+    const data = readData();
+    const orders = data.orders || [];
+    res.json(orders);
+  } catch (err) {
+    console.log("Error reading orders:", err);
+    res.status(500).json({ msg: "Error reading orders", error: err.message });
+  }
+});
+
+// 5️⃣ Get Order with Full Blockchain History - MUST come after "/" route
 router.get("/:orderId", auth, (req, res) => {
   const data = readData();
   const { orderId } = req.params;
@@ -284,18 +296,6 @@ router.get("/:orderId", auth, (req, res) => {
     verificationHash: order.blockchainHash,
     qrCode: order.qrCode
   });
-});
-
-// Get all orders
-router.get("/", auth, (req, res) => {
-  try {
-    const data = readData();
-    const orders = data.orders || [];
-    res.json(orders);
-  } catch (err) {
-    console.log("Error reading orders:", err);
-    res.status(500).json({ msg: "Error reading orders", error: err.message });
-  }
 });
 
 // Verify order authenticity (public endpoint)
