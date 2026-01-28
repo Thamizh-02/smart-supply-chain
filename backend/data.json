@@ -53,6 +53,12 @@
       "email": "sushanth@gmail.com",
       "password": "12345678",
       "role": "customer"
+    },
+    {
+      "username": "nitin",
+      "email": "nitin@gmail.com",
+      "password": "12345678",
+      "role": "customer"
     }
   ],
   "orders": [
